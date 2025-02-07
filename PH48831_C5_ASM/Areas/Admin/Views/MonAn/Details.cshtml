@@ -1,0 +1,26 @@
+﻿@model PH48831_C5_ASM.Models.MonAn
+
+<h1>Chi tiết món ăn</h1>
+
+<table class="table">
+    <tr>
+        <th>Tên món</th>
+        <td>@Model.TenMon</td>
+    </tr>
+    <tr>
+        <th>Giá</th>
+        <td>@Model.Gia.ToString("C")</td>
+    </tr>
+    <tr>
+        <th>Mô tả</th>
+        <td>@Model.MoTa</td>
+    </tr>
+    <tr>
+        <th>Hình ảnh</th>
+        <td>
+            <img src="@Model.HinhAnh" alt="@Model.TenMon" style="max-width: 200px;" />
+        </td>
+    </tr>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Quay lại</a>

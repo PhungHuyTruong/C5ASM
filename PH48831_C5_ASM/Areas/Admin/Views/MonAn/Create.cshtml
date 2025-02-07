@@ -1,0 +1,71 @@
+﻿@model PH48831_C5_ASM.Models.MonAn
+
+@{
+    Layout = ViewData["Layout"] as string; // Đặt layout động từ ViewData
+}
+
+<h1>Thêm món ăn</h1>
+
+<form asp-action="Create" method="post">
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h1 class="card-title text-center">Thêm món ăn</h1>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="form-group mb-3">
+                        <label for="TenMon" class="form-label">Tên món</label>
+                        <input type="text" class="form-control bg-light text-dark" asp-for="TenMon" placeholder="Nhập tên món" />
+                        <span asp-validation-for="TenMon" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Gia" class="form-label">Giá</label>
+                        <input type="number" class="form-control bg-light text-dark" asp-for="Gia" placeholder="Nhập giá món ăn" />
+                        <span asp-validation-for="Gia" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="MoTa" class="form-label">Mô tả</label>
+                        <textarea class="form-control bg-light text-dark" asp-for="MoTa" placeholder="Nhập mô tả món ăn"></textarea>
+                        <span asp-validation-for="MoTa" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="HinhAnh" class="form-label">Hình ảnh</label>
+                        <input type="text" class="form-control bg-light text-dark" asp-for="HinhAnh" placeholder="Nhập link hình ảnh" />
+                        <span asp-validation-for="HinhAnh" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="LoaiMonAnId" class="form-label">Loại món ăn</label>
+                        <select class="form-control bg-light text-dark" asp-for="LoaiMonAnId" asp-items="ViewBag.LoaiMonAnList">
+                            <option value="">-- Chọn loại món ăn --</option>
+                        </select>
+                        <span asp-validation-for="LoaiMonAnId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="KichCoId" class="form-label">Kích cỡ</label>
+                        <select class="form-control bg-light text-dark" asp-for="KichCoId" asp-items="ViewBag.KichCoList">
+                            <option value="">-- Chọn kích cỡ --</option>
+                        </select>
+                        <span asp-validation-for="KichCoId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="DiachiquanId" class="form-label">Địa chỉ quán</label>
+                        <select class="form-control bg-light text-dark" asp-for="DiachiquanId" asp-items="ViewBag.DiaChiQuanList">
+                            <option value="">-- Chọn địa chỉ quán --</option>
+                        </select>
+                        <span asp-validation-for="DiachiquanId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="ThanhPhanId" class="form-label">Thành phần</label>
+                        <select asp-for="ThanhPhanId" class="form-control bg-light text-dark" asp-items="ViewBag.ThanhPhanList"></select>
+                        <span asp-validation-for="ThanhPhanId" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success">Thêm món</button>
+                        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>

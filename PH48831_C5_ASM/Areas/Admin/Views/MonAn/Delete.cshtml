@@ -1,0 +1,32 @@
+﻿@model PH48831_C5_ASM.Models.MonAn
+
+<h1>Xóa món ăn</h1>
+
+<p>Bạn có chắc chắn muốn xóa món ăn này?</p>
+
+<table class="table">
+    <tr>
+        <th>Tên món</th>
+        <td>@Model.TenMon</td>
+    </tr>
+    <tr>
+        <th>Giá</th>
+        <td>@Model.Gia.ToString("C")</td>
+    </tr>
+    <tr>
+        <th>Mô tả</th>
+        <td>@Model.MoTa</td>
+    </tr>
+    <tr>
+        <th>Hình ảnh</th>
+        <td>
+            <img src="@Model.HinhAnh" alt="@Model.TenMon" style="max-width: 200px;" />
+        </td>
+    </tr>
+</table>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="MonAnId" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>

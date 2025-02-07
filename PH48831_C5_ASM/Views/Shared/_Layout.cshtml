@@ -1,0 +1,309 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Delfood</title>
+
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- nice select -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4=" crossorigin="anonymous" />
+    <!-- slidck slider -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css.map" integrity="undefined" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+
+</head>
+@* <style>
+    .dropdown-menu {
+        max-width: 200px;
+        margin-left: -120px;
+    }
+
+    .btn-custom-login {
+        color: #000; 
+        border: 1px solid #fff;
+        background-color: #fff; 
+        padding: 10px 20px;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom-login:hover {
+            color: black; 
+            background-color: #000; 
+            border-color: #000; 
+        }
+</style> *@
+<body>
+    <div class="hero_area">
+        <!-- header section strats -->
+        <header class="header_section">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg custom_nav-container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <span>
+                            Delfood
+                        </span>
+                    </a>
+                    <div class="" id="">
+                        <div class="User_option">
+                            <div class="container-fluid">
+                                <div class="collapse navbar-collapse" id="navbarNav">
+                                    <ul class="navbar-nav ms-auto">
+                                        <!-- Hiển thị dropdown nếu người dùng đã đăng nhập -->
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="nav-item dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    @User.Identity.Name
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <li><a class="dropdown-item" href="@Url.Action("Edit", "Profile")">Thông tin</a></li>
+                                                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")">Đăng xuất</a></li>
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item">
+                                                <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Đăng nhập</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom_menu-btn">
+                            <button onclick="openNav()">
+                                <img src="images/menu.png" alt="">
+                            </button>
+                        </div>
+                        <div id="myNav" class="overlay">
+                            <div class="overlay-content">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="MonAn" asp-action="Index">MonAn</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Combo" asp-action="Index">ComBo</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="GioHang" asp-action="XemGioHang">GioHang</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="GioHang" asp-action="LichSuHoaDon">Xem Lịch Sử Hóa Đơn</a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link text-light" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <section class="slider_section ">
+            <div class="slider_container">
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img1.png" alt="" />
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img2.png" alt="" />
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img3.png" alt="" />
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img4.png" alt="" />
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img1.png" alt="" />
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img2.png" alt="" />
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img3.png" alt="" />
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img-box">
+                        <img src="images/slider-img4.png" alt="" />
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- end header section -->
+    <!-- slider section -->
+
+    @* <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">ASM_PH48831</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Combo" asp-action="Index">Combo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="GioHang" asp-action="XemGioHang">Giỏ hàng của bạn</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        @{
+                            var taiKhoan = Context.Session.GetString("TaiKhoan");
+                        }
+                        @if (string.IsNullOrEmpty(taiKhoan))
+                        {
+                            <a href="/DangNhap/Login" class="btn btn-custom-login ms-auto" style="background-color:white">Đăng nhập</a>
+                        }
+                        else
+                        {
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="dropdownMenuButton" style="margin-left: -120px">
+                                    <li><a href="@Url.Action("Edit", "User")" class="dropdown-item">Thông tin</a></li>
+                                    <li><a href="@Url.Action("Logout", "DangNhap")" class="dropdown-item">Đăng Xuất</a></li>
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header> *@
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="footer_container">
+        <!-- info section -->
+        <section class="info_section ">
+            <div class="container">
+                <div class="contact_box">
+                    <a href="">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="info_links">
+                    <ul>
+                        <li class="active">
+                            <a href="index.html">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="about.html">
+                                About
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" href="blog.html">
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" href="testimonial.html">
+                                Testimonial
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="social_box">
+                    <a href="">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- end info_section -->
+        <!-- footer section -->
+        <footer class="footer_section">
+            <div class="container">
+                <p>
+                    &copy; <span id="displayYear"></span> All Rights Reserved By
+                    <a href="https://html.design/">Free Html Templates</a><br>
+                    Distributed By: <a href="https://themewagon.com/">ThemeWagon</a>
+                </p>
+            </div>
+        </footer>
+        <!-- footer section -->
+    </div>
+    <!-- jQery -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="js/bootstrap.js"></script>
+    <!-- slick  slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- nice select -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js" integrity="sha256-Zr3vByTlMGQhvMfgkQ5BtWRSKBGa2QlspKYJnkjZTmo=" crossorigin="anonymous"></script>
+    <!-- custom js -->
+    <script src="js/custom.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

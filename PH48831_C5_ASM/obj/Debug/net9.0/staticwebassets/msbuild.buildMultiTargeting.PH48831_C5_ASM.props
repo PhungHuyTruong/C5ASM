@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\PH48831_C5_ASM.props" />
+</Project>

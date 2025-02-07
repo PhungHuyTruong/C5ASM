@@ -1,0 +1,9 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+
+<h2>Xóa vai trò</h2>
+<p>Bạn có chắc chắn muốn xóa vai trò: <strong>@Model.Name</strong>?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

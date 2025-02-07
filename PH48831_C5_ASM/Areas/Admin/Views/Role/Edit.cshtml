@@ -1,0 +1,11 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+
+<h2>Chỉnh sửa vai trò</h2>
+
+<form asp-action="Edit" method="post">
+    <div class="form-group">
+        <label for="roleName">Tên vai trò:</label>
+        <input type="text" class="form-control" id="roleName" name="Name" value="@Model.Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+</form>

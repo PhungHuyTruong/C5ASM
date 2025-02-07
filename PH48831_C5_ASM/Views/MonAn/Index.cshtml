@@ -1,0 +1,144 @@
+﻿@model IEnumerable<PH48831_C5_ASM.Models.MonAn>
+@using Microsoft.AspNetCore.Identity
+
+
+@{
+    ViewData["Title"] = "Trang Chủ";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3 col-sm-12 mb-4">
+            <div class="filter-container p-4 bg-light rounded shadow-sm">
+                <h5 class="mb-3 text-primary">Lọc và Tìm kiếm</h5>
+                <form asp-controller="MonAn" asp-action="Index" method="get">
+                    <div class="btn-group-vertical w-100 mb-3">
+                        <button type="submit" name="SortBy" value="tatca" class="btn btn-outline-info">Tất cả</button>
+                        <button type="submit" name="SortBy" value="Đồ chay" class="btn btn-outline-success">Đồ chay</button>
+                        <button type="submit" name="SortBy" value="Món ăn khác" class="btn btn-outline-warning">Món ăn khác</button>
+                        <button type="submit" name="SortBy" value="Thịt cá" class="btn btn-outline-danger">Thịt / Cá</button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" name="Keyword" value="@ViewContext.HttpContext.Request.Query["Keyword"]" placeholder="Tìm món ăn..." class="form-control" />
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <input type="number" name="FromPrice" placeholder="Từ giá" value="@ViewContext.HttpContext.Request.Query["FromPrice"]" class="form-control me-2" />
+                        <input type="number" name="ToPrice" placeholder="Đến giá" value="@ViewContext.HttpContext.Request.Query["ToPrice"]" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Tìm</button>
+                    <button type="button" class="btn btn-danger w-100 mt-2" onclick="clearFilters()">Xóa bộ lọc</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-sm-12">
+            @if (Model.Any())
+            {
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card border-0 shadow-lg rounded" style="height: 450px;">
+                                <img src="@item.HinhAnh" class="card-img-top" alt="@item.TenMon" style="height: 200px; object-fit: cover;" />
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title text-primary">@item.TenMon</h5>
+                                    <p class="card-text" style="flex-grow: 1;">@item.MoTa</p>
+                                    <p class="text-success">Giá: @item.Gia.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</p>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="@Url.Action("ThemVaoGioHang", "GioHang", new { monAnId = item.MonAnId, soLuong = 1 })" class="btn btn-danger">Mua ngay</a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#loginModal">Mua ngay</button>
+                                    }
+                                    <a class="btn btn-outline-primary w-100 mt-2" asp-controller="MonAn" asp-action="Details" asp-route-id="@item.MonAnId">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (ViewBag.TotalPages != null && ViewBag.CurrentPage != null)
+                {
+                    int currentPage = (int)ViewBag.CurrentPage;
+                    int totalPages = (int)ViewBag.TotalPages;
+
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                <a class="page-link" asp-controller="MonAn" asp-action="Index"
+                                   asp-route-Keyword="@ViewContext.HttpContext.Request.Query["Keyword"]"
+                                   asp-route-FromPrice="@ViewContext.HttpContext.Request.Query["FromPrice"]"
+                                   asp-route-ToPrice="@ViewContext.HttpContext.Request.Query["ToPrice"]"
+                                   asp-route-SortBy="@ViewContext.HttpContext.Request.Query["SortBy"]"
+                                   asp-route-Order="@ViewContext.HttpContext.Request.Query["Order"]"
+                                   asp-route-Page="@(currentPage - 1)">Previous</a>
+                            </li>
+                            @for (int i = 1; i <= totalPages; i++)
+                            {
+                                <li class="page-item @(i == currentPage ? "active" : "")">
+                                    <a class="page-link" asp-controller="MonAn" asp-action="Index"
+                                       asp-route-Keyword="@ViewContext.HttpContext.Request.Query["Keyword"]"
+                                       asp-route-FromPrice="@ViewContext.HttpContext.Request.Query["FromPrice"]"
+                                       asp-route-ToPrice="@ViewContext.HttpContext.Request.Query["ToPrice"]"
+                                       asp-route-SortBy="@ViewContext.HttpContext.Request.Query["SortBy"]"
+                                       asp-route-Order="@ViewContext.HttpContext.Request.Query["Order"]"
+                                       asp-route-Page="@i">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                <a class="page-link" asp-controller="MonAn" asp-action="Index"
+                                   asp-route-Keyword="@ViewContext.HttpContext.Request.Query["Keyword"]"
+                                   asp-route-FromPrice="@ViewContext.HttpContext.Request.Query["FromPrice"]"
+                                   asp-route-ToPrice="@ViewContext.HttpContext.Request.Query["ToPrice"]"
+                                   asp-route-SortBy="@ViewContext.HttpContext.Request.Query["SortBy"]"
+                                   asp-route-Order="@ViewContext.HttpContext.Request.Query["Order"]"
+                                   asp-route-Page="@(currentPage + 1)">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">Không có kết quả nào được tìm thấy.</div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="loginModalLabel">Yêu cầu đăng nhập</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn cần đăng nhập để mua hàng.
+            </div>
+            <div class="modal-footer">
+                <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Đăng nhập</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function clearFilters() {
+            // Clear input values
+            document.querySelector('[name="Keyword"]').value = '';
+            document.querySelector('[name="FromPrice"]').value = '';
+            document.querySelector('[name="ToPrice"]').value = '';
+            // Redirect to clear filters
+            window.location.href = '@Url.Action("Index", "MonAn")';
+        }
+    </script>
+}

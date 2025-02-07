@@ -1,0 +1,125 @@
+﻿@model PH48831_C5_ASM.Models.HoaDon
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Delfood</title>
+
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link href="~/css/responsive.css" rel="stylesheet" />
+</head>
+
+<h2>Chi tiết hóa đơn</h2>
+<div>
+    <p><strong>Mã Hóa Đơn:</strong> @Model.HoaDonId</p>
+    <p><strong>Ngày Lập:</strong> @Model.NgayLap.ToString("dd/MM/yyyy")</p>
+    <p>
+        <strong>Tổng Tiền:</strong> @(Model.TongTien.ToString("#,0").Replace(",", ".") + "Đ")
+    </p>
+    <p><strong>Trạng Thái:</strong> @(Model.TrangThaiHoaDon?.TenTrangThai ?? "Chưa xác định")</p>
+</div>
+
+<h3>Chi tiết món ăn</h3>
+@if (Model.HoaDonChiTiets.Any(ct => ct.MonAn != null))
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên Món Ăn</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var chiTiet in Model.HoaDonChiTiets)
+            {
+                @if (chiTiet.MonAn != null)
+                {
+                    <tr>
+                        <td>@chiTiet.MonAn.TenMon</td>
+                        <td>@chiTiet.SoLuong</td>
+                        <td>@(@chiTiet.DonGia.ToString("#,0").Replace(",", ".") + "Đ")</td>
+                        <td>
+                            @((chiTiet.DonGia * chiTiet.SoLuong).ToString("#,0").Replace(",", ".") + "Đ")
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không có món ăn trong hóa đơn này.</p>
+}
+
+<h3>Chi tiết combo</h3>
+@if (Model.HoaDonChiTiets.Any(ct => ct.Combo != null))
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên Combo</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var chiTiet in Model.HoaDonChiTiets)
+            {
+                @if (chiTiet.Combo != null)
+                {
+                    <tr>
+                        <td>@chiTiet.Combo.TenCombo</td>
+                        <td>@chiTiet.SoLuong</td>
+                        <td>@(chiTiet.DonGia.ToString("#,0").Replace(",", ".") + "Đ")</td>
+                        <td>@((chiTiet.DonGia * chiTiet.SoLuong).ToString("#,0").Replace(",", ".") + "Đ")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không có combo trong hóa đơn này.</p>
+}
+
+<div class="row">
+    <div class="col-6">
+        @if (Model.TrangThaiHoaDon != null &&
+        (Model.TrangThaiHoaDon.TenTrangThai == "Đang xử lý" || Model.TrangThaiHoaDon.TenTrangThai == "Đang giao"))
+        {
+            <form method="post" asp-action="HuyHoaDon" asp-route-hoaDonId="@Model.HoaDonId">
+                <button type="submit" class="btn btn-danger">Hủy Hóa Đơn</button>
+            </form>
+        }
+    </div>
+    <div class="col-6">
+        <a href="@Url.Action("Index", "MonAn")" class="btn btn-primary btn-lg btn-custom">Quay lại danh sách món ăn</a>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+<script src="js/custom.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>

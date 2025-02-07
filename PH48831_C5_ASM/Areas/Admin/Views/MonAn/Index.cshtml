@@ -1,0 +1,46 @@
+﻿@model IEnumerable<PH48831_C5_ASM.Models.MonAn>
+
+@{
+    Layout = ViewData["Layout"] as string; // Đặt layout động từ ViewData
+}
+
+
+<h1>Danh sách món ăn</h1>
+
+<a href="~/Admin/MonAn/Create" class="btn btn-success">Thêm mới</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên món</th>
+            <th>Giá</th>
+            <th>Loại món</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TenMon</td>
+                <td>@item.Gia</td>
+                <td>
+                    @if (item.LoaiMonAn != null)
+                    {
+                        @item.LoaiMonAn.TenLoaiMon
+                    }
+                    else
+                    {
+                        <span>Không có loại món</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.MonAnId" class="btn btn-info">Chi tiết</a>
+                    <a asp-action="Edit" asp-route-id="@item.MonAnId" class="btn btn-warning">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.MonAnId" class="btn btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

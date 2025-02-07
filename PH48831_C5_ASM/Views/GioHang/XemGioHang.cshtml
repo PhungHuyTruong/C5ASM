@@ -1,0 +1,108 @@
+﻿@model PH48831_C5_ASM.Models.GioHang
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Delfood</title>
+
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center my-4">Giỏ Hàng</h2>
+
+        @if (Model != null && Model.GioHangChiTiets != null && Model.GioHangChiTiets.Count > 0)
+        {
+            <div class="table-responsive">
+                <form method="post" action="@Url.Action("CapNhatSoLuong", "GioHang")">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Tên Món</th>
+                                <th>Số Lượng</th>
+                                <th>Đơn Giá</th>
+                                <th>Tổng</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.GioHangChiTiets)
+                            {
+                                @if (item.MonAn != null)
+                                {
+                                    <tr>
+                                        <td>@item.MonAn.TenMon</td>
+                                        <td>
+                                            <input type="number" id="soLuong_@item.GioHangChiTietId"
+                                                   name="gioHangChiTiets[@item.GioHangChiTietId].SoLuong"
+                                                   value="@item.SoLuong" min="1" class="form-control" />
+                                            <input type="hidden" name="gioHangChiTiets[@item.GioHangChiTietId].GioHangChiTietId" value="@item.GioHangChiTietId" />
+                                        </td>
+                                        <td>@item.MonAn.Gia.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                        <td>@((item.MonAn.Gia * item.SoLuong).ToString("C", new System.Globalization.CultureInfo("vi-VN")))</td>
+                                        <td>
+                                            <button type="submit" class="btn btn-warning btn-sm">Cập Nhật</button>
+                                        </td>
+                                    </tr>
+                                }
+                                else if (item.Combo != null)
+                                {
+                                    <tr>
+                                        <td>@item.Combo.TenCombo</td>
+                                        <td>
+                                            <input type="number" id="soLuong_@item.GioHangChiTietId"
+                                                   name="gioHangChiTiets[@item.GioHangChiTietId].SoLuong"
+                                                   value="@item.SoLuong" min="1" class="form-control" />
+                                            <input type="hidden" name="gioHangChiTiets[@item.GioHangChiTietId].GioHangChiTietId" value="@item.GioHangChiTietId" />
+                                        </td>
+                                        <td>@item.Combo.GiaCombo.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                        <td>@((item.Combo.GiaCombo * item.SoLuong).ToString("C", new System.Globalization.CultureInfo("vi-VN")))</td>
+                                        <td>
+                                            <button type="submit" class="btn btn-warning btn-sm">Cập Nhật</button>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">Món ăn hoặc Combo không tồn tại.</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
+            <div class="mt-4">
+                <p><strong>Tổng Tiền Cần Thanh Toán: </strong>@ViewData["TongTien"]</p>
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("ThanhToan")" class="btn btn-primary">Thanh Toán</a>
+                    <a href="@Url.Action("HuyGioHang")" class="btn btn-danger">Hủy Giỏ Hàng</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="text-center">Giỏ hàng của bạn đang trống.</p>
+        }
+    </div>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg btn-custom">Quay lại danh sách món ăn</a>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="js/custom.js"></script>
+</body>
