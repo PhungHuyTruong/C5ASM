@@ -9,7 +9,7 @@ namespace PH48831_C5_ASM.Models
 
         [Required(ErrorMessage = "Người dùng là bắt buộc")]
         public string NguoiDungId { get; set; }
-        public ApplicationUser? User { get; set; }  // Updated to use ApplicationUser
+        public ApplicationUser? User { get; set; } 
 
         public ICollection<GioHangChiTiet> GioHangChiTiets { get; set; }
     }

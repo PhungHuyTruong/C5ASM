@@ -11,12 +11,10 @@ namespace PH48831_C5_ASM.Models
         public int GioHangId { get; set; }
         public GioHang? GioHang { get; set; }
 
-        // Thêm một khóa ngoại để tham chiếu đến Món ăn
-        public int? MonAnId { get; set; }  // Nullable, vì có thể không phải món ăn
+        public int? MonAnId { get; set; }  
         public MonAn? MonAn { get; set; }
 
-        // Thêm một khóa ngoại để tham chiếu đến Combo
-        public int? ComboId { get; set; }  // Nullable, vì có thể không phải combo
+        public int? ComboId { get; set; }
         public Combo? Combo { get; set; }
 
         [Required(ErrorMessage = "Số lượng là bắt buộc")]

@@ -17,20 +17,17 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
-        // Danh sách các vai trò
         public async Task<IActionResult> Index()
         {
             var roles = _roleManager.Roles;
             return View(roles);
         }
 
-        // Hiển thị form tạo vai trò
         public IActionResult Create()
         {
             return View();
         }
 
-        // Xử lý tạo vai trò
         [HttpPost]
         public async Task<IActionResult> Create(string roleName)
         {
@@ -46,7 +43,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View();
         }
 
-        // Hiển thị form chỉnh sửa vai trò
         public async Task<IActionResult> Edit(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
@@ -57,7 +53,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View(role);
         }
 
-        // Xử lý chỉnh sửa vai trò
         [HttpPost]
         public async Task<IActionResult> Edit(IdentityRole role)
         {
@@ -71,7 +66,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View(role);
         }
 
-        // Hiển thị form xóa vai trò
         public async Task<IActionResult> Delete(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
@@ -82,7 +76,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View(role);
         }
 
-        // Xử lý xóa vai trò
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

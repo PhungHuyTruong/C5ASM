@@ -15,7 +15,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             _context = context;
         }
 
-        // 1. Hiển thị danh sách món ăn
         public async Task<IActionResult> Index()
 
         {
@@ -24,7 +23,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View(monAns);
         }
 
-        // 2. Chi tiết món ăn
         public async Task<IActionResult> Details(int id)
         {
             var monAn = await _context.MonAns
@@ -35,14 +33,12 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View(monAn);
         }
 
-        // 3. Thêm món ăn (GET)
         public IActionResult Create()
         {
             ViewData["Layout"] = "_LayoutAdmin";
             return View();
         }
 
-        // 3. Thêm món ăn (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MonAn monAn)
@@ -54,13 +50,11 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Kiểm tra và đảm bảo rằng các danh sách không rỗng
             var loaiMonAnList = await _context.loaiMonAns.ToListAsync();
             var kichCoList = await _context.kichcos.ToListAsync();
             var diaChiQuanList = await _context.diaChiQuans.ToListAsync();
             var thanhPhanList = await _context.thanhPhans.ToListAsync();
 
-            // Truyền vào ViewBag
             ViewBag.LoaiMonAnList = new SelectList(loaiMonAnList, "LoaiMonAnId", "TenLoaiMon");
             ViewBag.KichCoList = new SelectList(kichCoList, "KichCoId", "TenKichCo");
             ViewBag.DiaChiQuanList = new SelectList(diaChiQuanList, "DiachiquanId", "DiaChi");
@@ -70,7 +64,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
         }
 
 
-        // 4. Sửa món ăn (GET)
         public async Task<IActionResult> Edit(int id)
         {
             var monAn = await _context.MonAns.FindAsync(id);
@@ -79,7 +72,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View(monAn);
         }
 
-        // 4. Sửa món ăn (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MonAn monAn)
@@ -103,7 +95,6 @@ namespace PH48831_C5_ASM.Areas.Admin.Controllers
             return View(monAn);
         }
 
-        // 5. Xóa món ăn (GET)
         public async Task<IActionResult> Delete(int id)
         {
             var monAn = await _context.MonAns

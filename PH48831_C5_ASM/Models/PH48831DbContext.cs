@@ -105,16 +105,15 @@ namespace PH48831_C5_ASM.Models
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<GioHang>()
-            .HasOne(gh => gh.User) // Mỗi GioHang có một User
-            .WithMany(u => u.GioHangs) // Mỗi User có thể có nhiều GioHang
-            .HasForeignKey(gh => gh.NguoiDungId) // Khóa ngoại là NguoiDungId
-            .OnDelete(DeleteBehavior.Cascade); // Xóa GioHang khi xóa User
+            .HasOne(gh => gh.User) 
+            .WithMany(u => u.GioHangs) 
+            .HasForeignKey(gh => gh.NguoiDungId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-            // Cấu hình quan hệ giữa GioHang và GioHangChiTiet
             modelBuilder.Entity<GioHang>()
-                .HasMany(gh => gh.GioHangChiTiets) // Mỗi GioHang có nhiều GioHangChiTiet
-                .WithOne(ghct => ghct.GioHang) // Mỗi GioHangChiTiet thuộc về một GioHang
-                .HasForeignKey(ghct => ghct.GioHangId) // Khóa ngoại là GioHangId
+                .HasMany(gh => gh.GioHangChiTiets) 
+                .WithOne(ghct => ghct.GioHang) 
+                .HasForeignKey(ghct => ghct.GioHangId) 
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<LoaiMonAn>().HasData(

@@ -46,7 +46,6 @@ namespace PH48831_C5_ASM.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-            // }
 
             return View(model);
         }

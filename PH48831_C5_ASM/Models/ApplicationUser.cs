@@ -9,7 +9,7 @@ namespace PH48831_C5_ASM.Models
         public string Address { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public ICollection<HoaDon> HoaDons { get; set; }  // Navigation property for HoaDon
+        public ICollection<HoaDon> HoaDons { get; set; }
         public ICollection<GioHang> GioHangs { get; set; }
     }
 }

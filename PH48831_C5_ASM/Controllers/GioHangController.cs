@@ -37,27 +37,23 @@ namespace PH48831_C5_ASM.Controllers
 
         public async Task<IActionResult> ThemVaoGioHang(int? monAnId, int? comboId, int soLuong)
         {
-            // Lấy ID người dùng
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Login", "Account"); // Nếu người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
+                return RedirectToAction("Login", "Account");
             }
 
-            // Kiểm tra món ăn hoặc combo có hợp lệ không (ít nhất một trong hai phải có giá trị)
             if (monAnId == null && comboId == null)
             {
                 return BadRequest("Vui lòng chọn món ăn hoặc combo.");
             }
 
-            // Lấy giỏ hàng của người dùng
             var gioHang = await _context.GioHangs
                 .Include(g => g.GioHangChiTiets)
                 .FirstOrDefaultAsync(g => g.NguoiDungId == userId);
 
             if (gioHang == null)
             {
-                // Nếu người dùng chưa có giỏ hàng, tạo giỏ hàng mới
                 gioHang = new GioHang
                 {
                     NguoiDungId = userId,
@@ -67,7 +63,6 @@ namespace PH48831_C5_ASM.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // Tìm xem combo hoặc món ăn đã tồn tại trong giỏ hàng chưa
             GioHangChiTiet gioHangChiTiet = null;
             if (monAnId.HasValue)
             {
@@ -80,12 +75,10 @@ namespace PH48831_C5_ASM.Controllers
 
             if (gioHangChiTiet != null)
             {
-                // Nếu món ăn hoặc combo đã tồn tại trong giỏ hàng, cập nhật số lượng
                 gioHangChiTiet.SoLuong += soLuong;
             }
             else
             {
-                // Nếu chưa tồn tại, thêm mới vào giỏ hàng
                 gioHangChiTiet = new GioHangChiTiet
                 {
                     MonAnId = monAnId,
@@ -96,10 +89,8 @@ namespace PH48831_C5_ASM.Controllers
                 _context.GioHangChiTiets.Add(gioHangChiTiet);
             }
 
-            // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            // Sau khi thêm món ăn hoặc combo vào giỏ hàng, chuyển hướng đến trang xem giỏ hàng
             return RedirectToAction("XemGioHang");
         }
         public async Task<IActionResult> XemGioHang()
@@ -112,9 +103,9 @@ namespace PH48831_C5_ASM.Controllers
 
             var gioHang = await _context.GioHangs
                                         .Include(g => g.GioHangChiTiets)
-                                        .ThenInclude(ghct => ghct.MonAn) // Bao gồm MonAn
+                                        .ThenInclude(ghct => ghct.MonAn) 
                                         .Include(g => g.GioHangChiTiets)
-                                        .ThenInclude(ghct => ghct.Combo) // Bao gồm Combo
+                                        .ThenInclude(ghct => ghct.Combo) 
                                         .FirstOrDefaultAsync(g => g.NguoiDungId == userId);
 
             if (gioHang != null && gioHang.GioHangChiTiets != null)
@@ -123,15 +114,13 @@ namespace PH48831_C5_ASM.Controllers
                 {
                     if (item.MonAn != null)
                     {
-                        // Tính giá cho món ăn
                         return item.MonAn.Gia * item.SoLuong;
                     }
                     else if (item.Combo != null)
                     {
-                        // Tính giá cho combo
                         return item.Combo.GiaCombo * item.SoLuong;
                     }
-                    return 0; // Nếu cả MonAn và Combo đều null, trả về 0
+                    return 0; 
                 });
                 ViewData["TongTien"] = tongTien.ToString("C", new System.Globalization.CultureInfo("vi-VN"));
             }
@@ -146,10 +135,9 @@ namespace PH48831_C5_ASM.Controllers
             if (gioHangChiTiets == null || gioHangChiTiets.Count == 0)
             {
                 ModelState.AddModelError("", "Không có sản phẩm nào để cập nhật.");
-                return RedirectToAction("XemGioHang"); // Chuyển hướng đến trang giỏ hàng
+                return RedirectToAction("XemGioHang");
             }
 
-            // Cập nhật số lượng giỏ hàng
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
@@ -177,24 +165,22 @@ namespace PH48831_C5_ASM.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("XemGioHang"); // Chuyển hướng đến trang giỏ hàng sau khi cập nhật
+            return RedirectToAction("XemGioHang");
         }
 
         public async Task<IActionResult> ThanhToan()
         {
-            // Lấy ID người dùng
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Login", "Account"); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+                return RedirectToAction("Login", "Account"); 
             }
 
-            // Lấy giỏ hàng của người dùng
             var gioHang = await _context.GioHangs
                 .Include(g => g.GioHangChiTiets)
-                .ThenInclude(gct => gct.MonAn) // Bao gồm món ăn
+                .ThenInclude(gct => gct.MonAn) 
                 .Include(g => g.GioHangChiTiets)
-                .ThenInclude(gct => gct.Combo) // Bao gồm combo
+                .ThenInclude(gct => gct.Combo) 
                 .FirstOrDefaultAsync(g => g.NguoiDungId == userId);
 
             if (gioHang == null || !gioHang.GioHangChiTiets.Any())
@@ -202,7 +188,6 @@ namespace PH48831_C5_ASM.Controllers
                 return BadRequest("Giỏ hàng trống. Vui lòng thêm sản phẩm trước khi thanh toán.");
             }
 
-            // Lấy trạng thái "Đang xử lý" từ bảng TrangThaiHoaDons
             var trangThaiDangXuLy = await _context.TrangThaiHoaDons
                 .FirstOrDefaultAsync(tt => tt.TenTrangThai == "Đang xử lý");
 
@@ -211,19 +196,17 @@ namespace PH48831_C5_ASM.Controllers
                 return BadRequest("Không tìm thấy trạng thái 'Đang xử lý' trong hệ thống.");
             }
 
-            // Tạo hóa đơn mới với trạng thái "Đang xử lý"
             var hoaDon = new HoaDon
             {
                 NguoiDungId = userId,
                 NgayLap = DateTime.Now,
-                TongTien = 0, // Sẽ tính sau
-                TrangThaiId = trangThaiDangXuLy.IdTrangThai, // Đặt trạng thái thành 'Đang xử lý'
+                TongTien = 0, 
+                TrangThaiId = trangThaiDangXuLy.IdTrangThai,
                 HoaDonChiTiets = new List<HoaDonChiTiet>()
             };
 
             decimal tongTien = 0;
 
-            // Duyệt qua từng chi tiết trong giỏ hàng để thêm vào hóa đơn
             foreach (var chiTiet in gioHang.GioHangChiTiets)
             {
                 decimal donGia = 0;
@@ -256,20 +239,15 @@ namespace PH48831_C5_ASM.Controllers
                 tongTien += donGia * chiTiet.SoLuong;
             }
 
-            // Cập nhật tổng tiền của hóa đơn
             hoaDon.TongTien = tongTien;
 
-            // Thêm hóa đơn vào cơ sở dữ liệu
             _context.HoaDons.Add(hoaDon);
 
-            // Xóa giỏ hàng sau khi thanh toán
             _context.GioHangChiTiets.RemoveRange(gioHang.GioHangChiTiets);
             _context.GioHangs.Remove(gioHang);
 
-            // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            // Chuyển hướng đến trang hiển thị hóa đơn
             return RedirectToAction("XemHoaDon", new { hoaDonId = hoaDon.HoaDonId });
         }
 
@@ -278,14 +256,12 @@ namespace PH48831_C5_ASM.Controllers
         [HttpPost]
         public async Task<IActionResult> HuyHoaDon(int hoaDonId)
         {
-            // Lấy UserId từ Claims (Identity)
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            // Tìm hóa đơn của người dùng dựa trên hoaDonId
             var hoaDon = await _context.HoaDons
                 .Include(h => h.TrangThaiHoaDon)
                 .Include(h => h.HoaDonChiTiets)
@@ -297,7 +273,6 @@ namespace PH48831_C5_ASM.Controllers
                 return NotFound("Hóa đơn không tồn tại hoặc không thuộc về bạn.");
             }
 
-            // Kiểm tra trạng thái hóa đơn, chỉ cho phép hủy nếu trạng thái là "Đang xử lý"
             var trangThaiDangXuLy = await _context.TrangThaiHoaDons.FirstOrDefaultAsync(tt => tt.TenTrangThai == "Đang xử lý");
 
             if (hoaDon.TrangThaiId != trangThaiDangXuLy.IdTrangThai)
@@ -305,7 +280,6 @@ namespace PH48831_C5_ASM.Controllers
                 return BadRequest("Hóa đơn không thể hủy vì không ở trạng thái 'Đang xử lý'.");
             }
 
-            // Thay đổi trạng thái hóa đơn thành "Đã hủy"
             var trangThaiDaHuy = await _context.TrangThaiHoaDons.FirstOrDefaultAsync(tt => tt.TenTrangThai == "Đã hủy");
             hoaDon.TrangThaiId = trangThaiDaHuy.IdTrangThai;
 
@@ -321,7 +295,7 @@ namespace PH48831_C5_ASM.Controllers
             .ThenInclude(hct => hct.MonAn)
         .Include(h => h.HoaDonChiTiets)
             .ThenInclude(hct => hct.Combo)
-        .Include(h => h.TrangThaiHoaDon) // Include trạng thái hóa đơn
+        .Include(h => h.TrangThaiHoaDon)
         .FirstOrDefaultAsync(h => h.HoaDonId == hoaDonId);
 
             if (hoaDon == null)
@@ -329,27 +303,24 @@ namespace PH48831_C5_ASM.Controllers
                 return NotFound("Không tìm thấy hóa đơn.");
             }
 
-            return View(hoaDon); // Render view XemHoaDon.cshtml
+            return View(hoaDon);
         }
 
 
         public async Task<IActionResult> HuyGioHang()
         {
-            // Lấy UserId từ Identity
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction("Login", "DangNhap");
             }
 
-            // Tìm giỏ hàng của người dùng dựa trên UserId
             var gioHang = await _context.GioHangs
                 .Include(g => g.GioHangChiTiets)
                 .FirstOrDefaultAsync(g => g.NguoiDungId == userId);
 
             if (gioHang != null && gioHang.GioHangChiTiets.Any())
             {
-                // Xóa tất cả các chi tiết giỏ hàng
                 _context.GioHangChiTiets.RemoveRange(gioHang.GioHangChiTiets);
                 await _context.SaveChangesAsync();
             }

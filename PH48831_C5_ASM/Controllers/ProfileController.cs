@@ -14,7 +14,6 @@ namespace PH48831_C5_ASM.Controllers
             _userManager = userManager;
         }
 
-        // GET: /Profile/Edit
         public async Task<IActionResult> Edit()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -34,7 +33,6 @@ namespace PH48831_C5_ASM.Controllers
             return View(model);
         }
 
-        // POST: /Profile/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateProfileModel model)

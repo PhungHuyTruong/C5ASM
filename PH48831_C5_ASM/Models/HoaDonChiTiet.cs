@@ -11,10 +11,10 @@ namespace PH48831_C5_ASM.Models
         public int HoaDonId { get; set; }
         public HoaDon? HoaDon { get; set; }
 
-        public int? MonAnId { get; set; } // Nullable, vì có thể không phải món ăn
+        public int? MonAnId { get; set; } 
         public MonAn? MonAn { get; set; }
 
-        public int? ComboId { get; set; } // Nullable, vì có thể không phải combo
+        public int? ComboId { get; set; } 
         public Combo? Combo { get; set; }
 
         [Required(ErrorMessage = "Số lượng là bắt buộc")]
